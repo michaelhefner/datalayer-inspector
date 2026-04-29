@@ -309,7 +309,7 @@ export default function App() {
                 <span className="tab-badge">{dataLayerEvents.length}</span>
               )}
             </button>
-            <button
+            {/* <button
               className={`panel-tab ${activeTab === 'confirmed' ? 'active' : ''}`}
               onClick={() => setActiveTab('confirmed')}
             >
@@ -326,7 +326,7 @@ export default function App() {
               {ga4Count > 0 && (
                 <span className="tab-badge tab-badge-ga4">{ga4Count}</span>
               )}
-            </button>
+            </button> */}
           </div>
           {activeTab === 'network' ? (
             <NetworkConsole
