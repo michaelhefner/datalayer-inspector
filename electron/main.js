@@ -71,7 +71,12 @@ const csvRows = [];
 
 function getCsvPath() {
   if (!csvPath) {
-    csvPath = path.join(__dirname, '../dist', `datalayer-${csvSessionStart}.csv`);
+    const fileName = `datalayer-${csvSessionStart}.csv`;
+    const dir = app.isPackaged
+      ? app.getPath('userData')
+      : path.join(__dirname, '../dist');
+    fs.mkdirSync(dir, { recursive: true });
+    csvPath = path.join(dir, fileName);
   }
   return csvPath;
 }
