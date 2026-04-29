@@ -53,6 +53,7 @@ export function getEventName(payload) {
   if (!Array.isArray(payload) || payload.length === 0) return 'push';
   const first = payload[0];
   if (first && typeof first === 'object') {
+    if (first.eventCategory) return first.eventCategory;
     if (first.event) return first.event;
     if (first.hitType) return first.hitType;
     if (first['gtm.start'] !== undefined) return 'gtm.init';

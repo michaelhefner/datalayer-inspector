@@ -31,7 +31,7 @@ function KVTable({ data }) {
   );
 }
 
-function GA4PayloadDetail({ req, ga4 }) {
+function GA4PayloadDetail({ req, ga4, payload }) {
   const { params, source } = ga4;
 
   // For URL or form-encoded source: show grouped GA4 params
@@ -39,6 +39,7 @@ function GA4PayloadDetail({ req, ga4 }) {
     const groups = groupGa4Params(params);
     return (
       <div className="ga4-payload">
+
         {groups.map(({ label, data }) => (
           <div key={label} className="ga4-group">
             <div className="ga4-group-label">{label}</div>
@@ -53,6 +54,12 @@ function GA4PayloadDetail({ req, ga4 }) {
   if (source === 'body-json' && params) {
     return (
       <div className="ga4-payload">
+        {payload && payload.length > 0 && (
+          <div className="ga4-group">
+            <div className="ga4-group-label">Original DL Push Payload</div>
+            <KVTable data={payload[0]} />
+          </div>
+        )}
         {params.measurement_id && (
           <div className="ga4-group">
             <div className="ga4-group-label">Identity</div>
@@ -143,7 +150,7 @@ function GA4Row({ entry, index }) {
         <div className="ct-detail">
           <div className="ct-section-label">GA4 Payload — {req.method} {req.status ?? '…'}</div>
           <div className="ga4-req-url">{req.url}</div>
-          <GA4PayloadDetail req={req} ga4={ga4} />
+          <GA4PayloadDetail req={req} ga4={ga4} payload={dlEvent.payload} />
         </div>
       )}
     </div>
