@@ -11,4 +11,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('datalayer-event', handler);
     return () => ipcRenderer.removeListener('datalayer-event', handler);
   },
+  exportEventToCsv: (data) => ipcRenderer.send('csv-export-event', data),
 });

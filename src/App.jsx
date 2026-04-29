@@ -211,6 +211,7 @@ export default function App() {
     if (!window.electronAPI?.onDataLayerEvent) return;
     const unsubscribe = window.electronAPI.onDataLayerEvent((event) => {
       setDataLayerEvents((prev) => [event, ...prev]);
+      window.electronAPI.exportEventToCsv?.(event);
     });
     return unsubscribe;
   }, []);
