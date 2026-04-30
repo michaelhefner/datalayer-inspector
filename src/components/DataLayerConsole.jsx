@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import RequestInspector from './RequestInspector';
 import { findMatchingRequests, getEventName } from '../utils/matching';
+import { parseBody } from '../utils/global-functions';
+import KVTable from './KVTable';
 
 function getMatchTag(matches) {
   if (matches.length === 0) return null;
@@ -41,7 +43,8 @@ function EventRow({ event, index, requests }) {
   const isGtmInternal = name === 'gtm.init' || name?.startsWith('gtm.');
   const matches = findMatchingRequests(event, requests);
   const matchTag = getMatchTag(matches);
-
+  const matchesWithBodies = matches.filter(m => m.req.postData);
+  const bodyMatches = matchesWithBodies ? matchesWithBodies.map(m => ({ body: parseBody(m.req.postData) })) : [];
   return (
     <div className={`dl-row ${isGtmInternal ? 'dl-row-gtm' : ''}`}>
       <div className="dl-summary" onClick={() => setExpanded((v) => !v)}>
@@ -67,6 +70,14 @@ function EventRow({ event, index, requests }) {
               {JSON.stringify(item, null, 2)}
             </pre>
           ))}
+          {bodyMatches.length > 0 && (
+            <div className="dl-matched-bodies">
+              <div className="dl-matched-label">Transmitted Values</div>
+              {bodyMatches.map((m, i) => (
+                <KVTable key={i} data={m.body.value} />
+              ))}
+            </div>
+          )}
 
           {matches.length > 0 && (
             <div className="dl-matched-requests">
@@ -74,6 +85,7 @@ function EventRow({ event, index, requests }) {
               {matches.map(({ req, hitCount }) => {
                 const statusOk = req.status >= 200 && req.status < 300;
                 return (
+                  <>
                   <div
                     key={req.id}
                     className="dl-matched-req dl-matched-req-clickable"
@@ -92,6 +104,7 @@ function EventRow({ event, index, requests }) {
                     </span>
                     <span className="dl-inspect-icon">›</span>
                   </div>
+                  </>
                 );
               })}
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { findMatchingRequests, getEventName } from '../utils/matching';
 import { detectGa4Request, isDlPushGa4, groupGa4Params } from '../utils/ga4';
+import KVTable from './KVTable';
 
 function formatTime(ts) {
   return new Date(ts).toLocaleTimeString(undefined, {
@@ -10,25 +11,6 @@ function formatTime(ts) {
     second: '2-digit',
     fractionalSecondDigits: 3,
   });
-}
-
-function KVTable({ data }) {
-  const entries = Object.entries(data);
-  if (entries.length === 0) return null;
-  return (
-    <table className="ri-kv-table">
-      <tbody>
-        {entries.map(([k, v]) => (
-          <tr key={k} className="ri-kv-row">
-            <td className="ri-kv-name">{k}</td>
-            <td className="ri-kv-value">
-              {typeof v === 'object' ? JSON.stringify(v, null, 2) : String(v)}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
 }
 
 function GA4PayloadDetail({ req, ga4, payload }) {

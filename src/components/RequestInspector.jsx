@@ -1,66 +1,8 @@
 import React, { useState } from 'react';
+import { parseQueryParams, parseBody, formatBytes } from '../utils/global-functions';
+import KVTable from './KVTable';
 
 const TABS = ['Params', 'Headers', 'Payload', 'Timing'];
-
-// Parse URL query string into a sorted object
-function parseQueryParams(url) {
-  try {
-    const u = new URL(url);
-    const out = {};
-    u.searchParams.forEach((v, k) => {
-      // If the same key appears multiple times, turn it into an array
-      if (k in out) {
-        out[k] = Array.isArray(out[k]) ? [...out[k], v] : [out[k], v];
-      } else {
-        out[k] = v;
-      }
-    });
-    return out;
-  } catch {
-    return null;
-  }
-}
-
-// Parse POST body — tries JSON, then URLSearchParams, then raw
-function parseBody(postData) {
-  if (!postData) return null;
-  try {
-    return { kind: 'json', value: JSON.parse(postData) };
-  } catch {}
-  try {
-    const p = new URLSearchParams(postData);
-    const out = {};
-    p.forEach((v, k) => { out[k] = v; });
-    if (Object.keys(out).length > 0) return { kind: 'form', value: out };
-  } catch {}
-  return { kind: 'raw', value: postData };
-}
-
-function formatBytes(bytes) {
-  if (bytes == null) return '—';
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
-}
-
-function KVTable({ data }) {
-  const entries = Object.entries(data);
-  if (entries.length === 0) return <div className="ri-empty">No entries</div>;
-  return (
-    <table className="ri-kv-table">
-      <tbody>
-        {entries.map(([k, v]) => (
-          <tr key={k} className="ri-kv-row">
-            <td className="ri-kv-name">{k}</td>
-            <td className="ri-kv-value">
-              {typeof v === 'object' ? JSON.stringify(v) : String(v)}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
 
 function HeadersSection({ title, headers }) {
   if (!headers) return null;
@@ -122,7 +64,11 @@ export default function RequestInspector({ request, onClose, tabs: allowedTabs, 
 
         {/* Body */}
         <div className="ri-body">
-
+          { body && body.value && (
+          <div className="ri-section">
+            <div className="ri-section-title">GTM Return Values</div>
+            <KVTable data={body.value} />
+          </div>)}
           {activeTab === 'Params' && (
             <>
               {hasQueryParams ? (
