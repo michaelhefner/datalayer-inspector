@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import RequestInspector from './RequestInspector';
 import { findMatchingRequests, getEventName } from '../utils/matching';
-import { parseBody } from '../utils/global-functions';
+import { formatTime, parseBody } from '../utils/global-functions';
 import KVTable from './KVTable';
 
 function getMatchTag(matches) {
@@ -18,22 +18,10 @@ function getMatchTag(matches) {
   };
 }
 
-function formatTime(ts) {
-  return new Date(ts).toLocaleTimeString(undefined, {
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    fractionalSecondDigits: 3,
-  });
-}
-
-function getDomain(url) {
-  try {
-    return new URL(url).hostname;
-  } catch {
-    return url;
-  }
+function onlyEPKeys(obj) {
+  if (obj === null || typeof obj !== 'object') return false;
+  const keys = Object.keys(obj);
+  return keys.length > 0 && keys.filter(k => ['ep'].includes(k)).length > 0;  
 }
 
 function EventRow({ event, index, requests }) {
@@ -44,7 +32,12 @@ function EventRow({ event, index, requests }) {
   const matches = findMatchingRequests(event, requests);
   const matchTag = getMatchTag(matches);
   const matchesWithBodies = matches.filter(m => m.req.postData);
-  const bodyMatches = matchesWithBodies ? matchesWithBodies.map(m => ({ body: parseBody(m.req.postData) })) : [];
+  const matchesWithParams = matches.filter(m => m.req.url && m.req.url.includes('?'));
+  const bodyMatches = matchesWithBodies.length > 0
+    ? matchesWithBodies.map(m => ({ body: parseBody(m.req.postData) }))
+    : matchesWithParams.length > 0
+      ? matchesWithParams.map(m => ({ body: onlyEPKeys(parseBody(m.req.url)) ? parseBody(m.req.url) : parseBody(m.req.url) }))
+      : [];
   return (
     <div className={`dl-row ${isGtmInternal ? 'dl-row-gtm' : ''}`}>
       <div className="dl-summary" onClick={() => setExpanded((v) => !v)}>
@@ -54,7 +47,7 @@ function EventRow({ event, index, requests }) {
         <span className={`dl-event-name ${isGtmInternal ? 'dl-name-gtm' : 'dl-name-custom'}`}>
           {name}
         </span>
-        <span className="dl-domain">{getDomain(event.url)}</span>
+        {isGtmInternal && <span className="dl-tag-gtm">GTM</span>}
         {matchTag && (
           <span className={`dl-match-tag dl-match-${matchTag.kind}`}>
             {matchTag.label}
@@ -118,7 +111,78 @@ function EventRow({ event, index, requests }) {
   );
 }
 
+function UrlGroup({ url, events, requests, globalOffset }) {
+  const [collapsed, setCollapsed] = useState(false);
+  let displayUrl;
+  try {
+    const u = new URL(url);
+    displayUrl = u.pathname + u.search + u.hash || u.href;
+  } catch {
+    displayUrl = url;
+  }
+  let hostname;
+  try {
+    hostname = new URL(url).hostname;
+  } catch {
+    hostname = url;
+  }
+  return (
+    <div className="dl-url-group">
+      <div className="dl-url-group-header" onClick={() => setCollapsed((v) => !v)}>
+        <span className="dl-toggle">{collapsed ? '▸' : '▾'}</span>
+        <span className="dl-url-group-host">{hostname}</span>
+        <span className="dl-url-group-path" title={url}>{displayUrl}</span>
+        <span className="dl-url-group-count">{events.length}</span>
+      </div>
+      {!collapsed && events.map((event, i) => (
+        <EventRow
+          key={`${event.ts}-${i}`}
+          event={event}
+          index={globalOffset + events.length - i}
+          requests={requests}
+        />
+      ))}
+    </div>
+  );
+}
+
+function isGtmInternalEvent(e) {
+  const name = getEventName(e.payload);
+  return name === 'gtm.init' || name?.startsWith('gtm.');
+}
+
 export default function DataLayerConsole({ events, requests, onClear }) {
+  const [onlyWithEvent, setOnlyWithEvent] = useState(true);
+  const [hideGtm, setHideGtm] = useState(false);
+
+  const visibleEvents = events.filter((e) => {
+    if (onlyWithEvent && !(Array.isArray(e.payload) && e.payload.length > 0 && e.payload[0]?.event)) return false;
+    if (hideGtm && isGtmInternalEvent(e)) return false;
+    return true;
+  });
+
+  // Group events by URL, preserving insertion order of first appearance
+  const groups = [];
+  const urlIndex = new Map();
+  for (const event of visibleEvents) {
+    const key = event.url;
+    if (!urlIndex.has(key)) {
+      urlIndex.set(key, groups.length);
+      groups.push({ url: key, events: [] });
+    }
+    groups[urlIndex.get(key)].events.push(event);
+  }
+
+  // Compute per-group offsets so event indices remain globally consistent
+  const offsets = [];
+  let running = 0;
+  for (const g of groups) {
+    offsets.push(running);
+    running += g.events.length;
+  }
+
+  const filteredCount = events.length - visibleEvents.length;
+
   return (
     <div className="datalayer-console">
       <div className="console-toolbar">
@@ -127,7 +191,21 @@ export default function DataLayerConsole({ events, requests, onClear }) {
             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
           </svg>
         </button>
-        <span className="request-count">{events.length} push{events.length !== 1 ? 'es' : ''}</span>
+        <span className="request-count">{visibleEvents.length} push{visibleEvents.length !== 1 ? 'es' : ''}{filteredCount > 0 ? ` (${filteredCount} hidden)` : ''}</span>
+        <button
+          className={`icon-btn dl-filter-btn${onlyWithEvent ? ' dl-filter-btn-active' : ''}`}
+          onClick={() => setOnlyWithEvent((v) => !v)}
+          title={onlyWithEvent ? 'Showing only pushes with "event" — click to show all' : 'Filter: only show pushes with "event" attribute'}
+        >
+          event
+        </button>
+        <button
+          className={`icon-btn dl-filter-btn${hideGtm ? ' dl-filter-btn-active' : ''}`}
+          onClick={() => setHideGtm((v) => !v)}
+          title={hideGtm ? 'GTM internal events hidden — click to show' : 'Hide GTM internal events'}
+        >
+          hide GTM
+        </button>
       </div>
 
       <div className="dl-body">
@@ -136,8 +214,14 @@ export default function DataLayerConsole({ events, requests, onClear }) {
             Navigate to a page with GTM or a custom dataLayer implementation to see pushes.
           </div>
         ) : (
-          events.map((event, i) => (
-            <EventRow key={`${event.ts}-${i}`} event={event} index={events.length - i} requests={requests} />
+          groups.map((group, gi) => (
+            <UrlGroup
+              key={group.url}
+              url={group.url}
+              events={group.events}
+              requests={requests}
+              globalOffset={offsets[gi]}
+            />
           ))
         )}
       </div>

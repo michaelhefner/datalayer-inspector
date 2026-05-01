@@ -40,4 +40,14 @@ function formatBytes(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
-export { parseQueryParams, parseBody, formatBytes };
+function formatTime(ts) {
+  return new Date(ts).toLocaleTimeString(undefined, {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3,
+  });
+}
+
+export { parseQueryParams, parseBody, formatBytes, formatTime };

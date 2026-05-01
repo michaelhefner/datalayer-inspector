@@ -36,12 +36,24 @@ export function findMatchingRequests(dlEvent, requests) {
   for (const req of requests) {
     if (req.wallTime === undefined) continue;
     const dt = req.wallTime - dlEvent.ts;
-    if (dt < -500 || dt > 5000) continue;
+    if (dt < -500 || dt > 10000) continue;
 
     const searchText = (req.url || '') + '\n' + (req.postData || '');
+
+    // Also build a decoded version of query-param values so URL-encoded strings
+    // (e.g. "hello%20world") match the raw DL value ("hello world").
+    let decodedParams = '';
+    try {
+      const qIndex = (req.url || '').indexOf('?');
+      if (qIndex !== -1) {
+        const params = new URLSearchParams(req.url.slice(qIndex + 1));
+        decodedParams = Array.from(params.values()).join('\n');
+      }
+    } catch (_) { /* malformed URL — ignore */ }
+
     let hitCount = 0;
     for (const val of values) {
-      if (searchText.includes(val)) hitCount++;
+      if (searchText.includes(val) || decodedParams.includes(val)) hitCount++;
     }
     if (hitCount > 0) matches.push({ req, hitCount });
   }

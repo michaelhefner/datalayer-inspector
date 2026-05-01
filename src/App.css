@@ -18,7 +18,7 @@ body {
   background: #1e1e1e;
   color: #cccccc;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.4;
 }
 
@@ -65,7 +65,7 @@ button {
   justify-content: center;
   width: 28px;
   height: 28px;
-  font-size: 17px;
+  font-size: 1.0625rem;
   background: none;
   border: none;
   border-radius: 4px;
@@ -96,7 +96,7 @@ button {
   border: 1px solid #3c3c3c;
   border-radius: 14px;
   color: #d4d4d4;
-  font-size: 13px;
+  font-size: 0.8125rem;
   outline: none;
   transition: border-color 0.15s, background 0.15s;
 }
@@ -112,7 +112,7 @@ button {
   border: none;
   border-radius: 4px;
   color: #fff;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   flex-shrink: 0;
   transition: background 0.15s;
@@ -200,7 +200,7 @@ button {
   border-bottom: 2px solid transparent;
   color: #888;
   padding: 6px 16px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.1s;
@@ -224,7 +224,7 @@ button {
   background: #007acc;
   color: #fff;
   border-radius: 8px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   min-width: 16px;
   height: 16px;
@@ -282,6 +282,54 @@ button {
   border-bottom: 1px solid #272727;
 }
 
+.dl-url-group {
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.dl-url-group-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  background: #1a1a1a;
+  cursor: pointer;
+  font-size: 0.625rem;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.dl-url-group-header:hover {
+  background: #222;
+}
+
+.dl-url-group-host {
+  color: #888;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.dl-url-group-path {
+  color: #555;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dl-url-group-count {
+  flex-shrink: 0;
+  background: #2d2d2d;
+  color: #888;
+  border-radius: 10px;
+  padding: 0 6px;
+  font-size: 0.625rem;
+  font-variant-numeric: tabular-nums;
+}
+
+
 .dl-row-gtm {
   opacity: 0.65;
 }
@@ -292,7 +340,7 @@ button {
   gap: 8px;
   padding: 4px 8px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 0.6875rem;
   min-height: 26px;
   transition: background 0.05s;
 }
@@ -305,12 +353,12 @@ button {
   color: #666;
   flex-shrink: 0;
   width: 10px;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 
 .dl-index {
   color: #555;
-  font-size: 10px;
+  font-size: 0.625rem;
   flex-shrink: 0;
   min-width: 28px;
   text-align: right;
@@ -319,7 +367,7 @@ button {
 .dl-time {
   color: #666;
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -340,9 +388,21 @@ button {
   color: #888;
 }
 
+.dl-tag-gtm {
+  flex-shrink: 0;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: #2e2a14;
+  color: #d4a64a;
+  border: 1px solid #4a3f1a;
+}
+
 .dl-domain {
   color: #666;
-  font-size: 10px;
+  font-size: 0.625rem;
   flex-shrink: 0;
   max-width: 130px;
   overflow: hidden;
@@ -354,7 +414,7 @@ button {
   flex-shrink: 0;
   padding: 1px 6px;
   border-radius: 3px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -387,7 +447,7 @@ button {
 }
 
 .dl-matched-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
@@ -402,7 +462,7 @@ button {
   align-items: center;
   gap: 6px;
   padding: 4px 8px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   background: #141414;
   border-bottom: 1px solid #222;
   min-width: 0;
@@ -413,7 +473,7 @@ button {
 }
 
 .dl-matched-method {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   flex-shrink: 0;
   min-width: 34px;
@@ -426,7 +486,7 @@ button {
 .dl-method-patch  { color: #c586c0; }
 
 .dl-matched-status {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   flex-shrink: 0;
   min-width: 28px;
@@ -444,12 +504,12 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #9cdcfe;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .dl-matched-hits {
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #555;
   font-variant-numeric: tabular-nums;
 }
@@ -465,7 +525,7 @@ button {
 .dl-inspect-icon {
   flex-shrink: 0;
   color: #555;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1;
 }
 
@@ -506,7 +566,7 @@ button {
 }
 
 .ri-method {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -518,7 +578,7 @@ button {
 .ri-method-patch  { color: #c586c0; }
 
 .ri-status {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -528,7 +588,7 @@ button {
 .ri-status-pending { color: #d4a64a; }
 
 .ri-duration {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #666;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
@@ -540,7 +600,7 @@ button {
   border: none;
   color: #666;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 0.8125rem;
   padding: 2px 4px;
   border-radius: 3px;
   line-height: 1;
@@ -552,7 +612,7 @@ button {
 }
 
 .ri-url {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #9cdcfe;
   word-break: break-all;
   margin-bottom: 8px;
@@ -572,7 +632,7 @@ button {
   border-bottom: 2px solid transparent;
   color: #888;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 5px 12px;
   transition: color 0.1s, border-color 0.1s;
 }
@@ -602,7 +662,7 @@ button {
 }
 
 .ri-section-title {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
@@ -612,13 +672,13 @@ button {
 
 .ri-empty-state {
   padding: 24px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #555;
   text-align: center;
 }
 
 .ri-empty {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #555;
   font-style: italic;
   padding: 2px 0;
@@ -627,7 +687,7 @@ button {
 .ri-kv-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .ri-kv-row:hover .ri-kv-name,
@@ -656,7 +716,7 @@ button {
   border: 1px solid #333;
   border-radius: 4px;
   padding: 8px 10px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
   color: #ce9178;
   white-space: pre-wrap;
@@ -681,7 +741,7 @@ button {
 }
 
 .ri-timing-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #666;
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
@@ -694,7 +754,7 @@ button {
 }
 
 .dl-detail-url {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #666;
   margin-bottom: 6px;
   word-break: break-all;
@@ -705,7 +765,7 @@ button {
   border: 1px solid #333;
   border-radius: 4px;
   padding: 8px 10px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
   color: #ce9178;
   white-space: pre-wrap;
@@ -743,6 +803,22 @@ button {
   color: #fff;
 }
 
+.dl-filter-btn {
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+
+.dl-filter-btn-active {
+  background: #1a3a4a !important;
+  color: #4fc1ff !important;
+  border-color: #2d5a6a !important;
+}
+
 .filter-tabs {
   display: flex;
   gap: 1px;
@@ -754,7 +830,7 @@ button {
   border-bottom: 2px solid transparent;
   color: #888;
   padding: 2px 9px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   border-radius: 2px 2px 0 0;
   transition: color 0.1s;
 }
@@ -774,7 +850,7 @@ button {
   border-radius: 3px;
   color: #ccc;
   padding: 2px 8px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   width: 210px;
   outline: none;
   transition: border-color 0.15s;
@@ -786,7 +862,7 @@ button {
 
 .request-count {
   margin-left: auto;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #666;
   white-space: nowrap;
 }
@@ -824,7 +900,7 @@ button {
 }
 
 .table-header .col {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: #888;
   padding: 4px 6px;
@@ -856,7 +932,7 @@ button {
 /* ── Column widths ────────────────────────────────────────────────────────── */
 .col { display: flex; align-items: center; overflow: hidden; }
 
-.col-index  { width: 38px;  flex-shrink: 0; justify-content: flex-end; color: #555; font-size: 10px; padding: 0 6px; }
+.col-index  { width: 38px;  flex-shrink: 0; justify-content: flex-end; color: #555; font-size: 0.625rem; padding: 0 6px; }
 .col-method { width: 56px;  flex-shrink: 0; font-weight: 700; }
 .col-status { width: 56px;  flex-shrink: 0; }
 .col-type   { width: 82px;  flex-shrink: 0; color: #888; }
@@ -873,7 +949,7 @@ button {
   border-bottom: 1px solid #282828;
   cursor: pointer;
   transition: background 0.05s;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .table-row:hover {
@@ -922,7 +998,7 @@ button {
 }
 
 .domain-text {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #666;
   max-width: 100%;
   overflow: hidden;
@@ -935,7 +1011,7 @@ button {
   padding: 28px 16px;
   text-align: center;
   color: #555;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 /* ── Request detail panel ─────────────────────────────────────────────────── */
@@ -967,7 +1043,7 @@ button {
   border-bottom: 2px solid transparent;
   color: #888;
   padding: 6px 16px;
-  font-size: 12px;
+  font-size: 0.75rem;
   transition: color 0.1s;
 }
 
@@ -986,7 +1062,7 @@ button {
   color: #888;
   padding: 4px 10px;
   border-radius: 3px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin-right: 4px;
   transition: background 0.1s, color 0.1s;
 }
@@ -1032,7 +1108,7 @@ button {
   background: #2d2d2d;
   border-bottom: 1px solid #333;
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: #ccc;
   letter-spacing: 0.03em;
@@ -1043,7 +1119,7 @@ button {
   padding: 6px 10px;
   color: #555;
   font-style: italic;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .header-row {
@@ -1051,7 +1127,7 @@ button {
   gap: 8px;
   padding: 3px 10px;
   border-bottom: 1px solid #272727;
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.5;
 }
 
@@ -1092,7 +1168,7 @@ button {
 }
 
 .timing-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #888;
   white-space: nowrap;
 }
@@ -1109,7 +1185,7 @@ button {
   gap: 6px;
   padding: 5px 8px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 0.6875rem;
   min-height: 28px;
   transition: background 0.05s;
 }
@@ -1122,12 +1198,12 @@ button {
   color: #666;
   flex-shrink: 0;
   width: 10px;
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 
 .ct-index {
   color: #555;
-  font-size: 10px;
+  font-size: 0.625rem;
   flex-shrink: 0;
   min-width: 28px;
   text-align: right;
@@ -1136,7 +1212,7 @@ button {
 .ct-time {
   color: #666;
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1152,18 +1228,18 @@ button {
 .ct-arrow {
   color: #555;
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .ct-method {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   flex-shrink: 0;
   min-width: 30px;
 }
 
 .ct-status {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
@@ -1180,12 +1256,12 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #9cdcfe;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .ct-extra-count {
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #666;
   background: #2d2d2d;
   border-radius: 8px;
@@ -1197,7 +1273,7 @@ button {
 
 .ct-confirmed-badge {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   width: 18px;
   text-align: center;
@@ -1214,7 +1290,7 @@ button {
 }
 
 .ct-section-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
@@ -1223,7 +1299,7 @@ button {
 }
 
 .ct-dl-source {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #555;
   margin-bottom: 4px;
 }
@@ -1232,7 +1308,7 @@ button {
 
 .ga4-tid {
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   color: #f59e0b;
   background: #2a2000;
@@ -1244,7 +1320,7 @@ button {
 }
 
 .ga4-req-url {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #555;
   word-break: break-all;
   margin-bottom: 8px;
@@ -1263,7 +1339,7 @@ button {
 }
 
 .ga4-group-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   color: #888;
   text-transform: uppercase;
@@ -1283,7 +1359,7 @@ button {
 }
 
 .ga4-event-name {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: #4fc1ff;
   margin-bottom: 4px;

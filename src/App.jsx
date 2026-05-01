@@ -75,7 +75,7 @@ export default function App() {
     let count = 0;
     for (const dlEvent of dataLayerEvents) {
       const matches = findMatchingRequests(dlEvent, requests);
-      if (matches.some(({ req }) => detectGa4Request(req).isGa4)) count++;
+      if (matches && matches.some(({ req }) => detectGa4Request(req).isGa4)) count++;
     }
     return count;
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -210,7 +210,11 @@ export default function App() {
   useEffect(() => {
     if (!window.electronAPI?.onDataLayerEvent) return;
     const unsubscribe = window.electronAPI.onDataLayerEvent((event) => {
-      setDataLayerEvents((prev) => [event, ...prev]);
+      setDataLayerEvents((prev) => {
+        const key = `${event.ts}|${event.url}|${JSON.stringify(event.payload)}`;
+        if (prev.some((e) => `${e.ts}|${e.url}|${JSON.stringify(e.payload)}` === key)) return prev;
+        return [event, ...prev];
+      });
       window.electronAPI.exportEventToCsv?.(event);
     });
     return unsubscribe;
